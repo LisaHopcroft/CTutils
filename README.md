@@ -9,6 +9,7 @@ Please report!
 
 ## What is CTutils?
  
+
 CTutils is an R package containing methods to assist in writing
 statistical study reports for clinical trials, although the functions
 could well be useful in other contexts. I wrote these functions
