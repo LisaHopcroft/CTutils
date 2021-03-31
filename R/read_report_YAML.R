@@ -87,33 +87,7 @@ read_report_YAML = function ( yml.file ="settings.yml" ) {
     yml_vars[[ this.date ]] = ymd( yml_vars[ this.date ] )
   }
 
-
-
   ### Creating the DMC object
-  PERIOD.mask = names( yml_vars ) %>% str_detect( "^EUDRACT.PERIOD" )
-  PERIOD.titles  = yml_vars[ PERIOD.mask & str_detect( names(yml_vars), "TITLE"  ) ] %>% unlist
-  PERIOD.baseline  = yml_vars[ PERIOD.mask & str_detect( names(yml_vars), "BASELINE"  ) ] %>% unlist
-  PERIOD.allocation = yml_vars[ PERIOD.mask & str_detect( names(yml_vars), "ALLOTATION_METHOD" ) ] %>%  unlist
-  PERIOD.blinding_type = yml_vars[ PERIOD.mask & str_detect( names(yml_vars), "BLINDING.TYPE" ) ] %>% unlist
-  PERIOD.blinding_details = yml_vars[ PERIOD.mask & str_detect( names(yml_vars), "BLINDING.DETAILS" ) ] %>% unlist
-
-  PERIOD.INFO = tibble(
-    variable = names( yml_vars )[PERIOD.mask],
-    value = yml_vars[PERIOD.mask] %>% as.character ) %>%
-    mutate( section_header = ifelse( str_detect(variable,"TITLE"),
-                                     value,
-                                     NA ) ) %>%
-    fill( section_header ) %>%
-    mutate( question = ifelse( str_detect(variable,"TITLE"),
-                               NA,
-                               str_replace(variable,"EUDRACT\\.PERIOD\\.","" ) ) ) %>%
-    mutate( question = str_replace( question, "[\\._]", " " )) %>%
-    mutate( question = tools::toTitleCase( tolower(question) ) ) %>%
-    mutate( question = str_replace( question, "Role", "Role #" ) ) %>%
-    select( section_header, question, value ) %>%
-    filter( !is.na( question ) ) %>%
-    mutate( section_header = unfill_vec(section_header) )
-
   yml_vars.amended = c( yml_vars[!DMC_committee.mask & !DMC_meeting.mask & !VISIT.mask],
                         list(
                           ### DMC information
