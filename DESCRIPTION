@@ -1,8 +1,8 @@
 Package: CTutils
 Type: Package
 Title: Helpful Functions for Clinical Trial Data Analysis at SCTRU (Public Health Scotland)
-Version: 0.1.0
-Authors@R: person("Lisa", "Hopcroft", email = "Lisa.Hopcroft1@nhs.net",
+Version: 0.2
+Authors@R: person("Lisa", "Hopcroft", email = "Lisa.Hopcroft@phs.scot",
                   role = c("aut", "cre"))
 Description: This package was developed to support the statistical work done at SCTRU
     (Scottish Clinical Trials Research Unit) as part of Public Health Scotland, from
@@ -38,6 +38,7 @@ Imports:
     purrr,
     RColorBrewer,
     readr,
+    readxl,
     rlang,
     rmarkdown,
     stringr,
