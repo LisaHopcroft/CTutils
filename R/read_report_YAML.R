@@ -99,9 +99,7 @@ read_report_YAML = function ( yml.file ="settings.yml" ) {
                           GLOSSARY.FILE           =GLOSSARY.file,
                           GLOSSARY.DEPENDENCY.FILE=DEPENDENCY.file,
                           ### Order of visits
-                          VISIT.ORDER = VISIT.ORDER,
-                          ### Period iformation
-                          PERIOD.INFO = PERIOD.INFO
+                          VISIT.ORDER = VISIT.ORDER
                         )
   )
 
