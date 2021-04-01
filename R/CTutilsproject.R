@@ -1,19 +1,26 @@
 #' CTutilsproject
+#' 
 #' @description Create a directory structure to match that used by CTutils (PHS). This function is meant to be used within RStudio by going to the File menu, then New Project.
 #'
-#' @param path Filepath for the project.
-#' @param author_name Name of the main author for the project.
-#' @param n_scripts Number of code files to start the project with.
-#' @param git Initialise the project with Git.
-#' @param renv Initialise the project with package management using renv.
+#' @param path Filepath for the project
+#' @param author_name Name of the main author for the project
+#' @param author_email Email of the main author for the project
+#' @param author_organisation Organisation of the main author for the project
+#' @param trial_name Short name of the trial (e.g., NAXIVA, SPRING)
+#' @param git Initialise the project with Git
+#' @param renv Initialise the project with package management using renv
+#' 
 #' @importFrom tibble tribble
 #' @importFrom stringr str_replace
 #' @importFrom dplyr %>%
+#' 
 #' @return New project created according to the CTutils project structure.
+#' 
 #' @export
+#' 
 #' @examples
 #' \dontrun{
-#' phsproject(path = file.path(getwd(), "testproj"), author_name = "A Person", n_scripts = 1)
+#' phsproject(path = file.path(getwd(), "testproj"), author_name = "A Person")
 #' }
 #'
 CTutilsproject <- function(path,
@@ -21,7 +28,6 @@ CTutilsproject <- function(path,
                            author_email = "Lisa.Hopcroft@phs.scot",
                            author_organisation = "Public Health Scotland",
                            trial_name = "TRIAL_NAME",
-                           n_scripts = 1,
                            git = TRUE,
                            renv = FALSE) {
 
@@ -100,10 +106,10 @@ CTutilsproject <- function(path,
 
 
   ### Copy Template documents to project directory
-  for ( template_document in dir( system.file("resources",package="CTtemplate") ) ) {
-    file_location = system.file( "resources",  template_document,  package = "CTtemplate" )
+  for ( template_document in dir( system.file("resources",package="CTutils") ) ) {
+    file_location = system.file( "resources",  template_document,  package = "CTutils" )
     file_name = basename( file_location )
-    cat( sprintf( "This file: %s\n", file_name ) )
+    cat( sprintf( "Creating template document: %s\n", file_name ) )
     text_template = readLines( file_location, warn=FALSE )
     text_specific = stringr::str_replace( text_template , "<<TRIAL_NAME>>", trial_name )
     writeLines( text_specific, file.path( path, file_name ))

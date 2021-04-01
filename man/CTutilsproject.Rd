@@ -10,21 +10,24 @@ CTutilsproject(
   author_email = "Lisa.Hopcroft@phs.scot",
   author_organisation = "Public Health Scotland",
   trial_name = "TRIAL_NAME",
-  n_scripts = 1,
   git = TRUE,
   renv = FALSE
 )
 }
 \arguments{
-\item{path}{Filepath for the project.}
+\item{path}{Filepath for the project}
 
-\item{author_name}{Name of the main author for the project.}
+\item{author_name}{Name of the main author for the project}
 
-\item{n_scripts}{Number of code files to start the project with.}
+\item{author_email}{Email of the main author for the project}
 
-\item{git}{Initialise the project with Git.}
+\item{author_organisation}{Organisation of the main author for the project}
 
-\item{renv}{Initialise the project with package management using renv.}
+\item{trial_name}{Short name of the trial (e.g., NAXIVA, SPRING)}
+
+\item{git}{Initialise the project with Git}
+
+\item{renv}{Initialise the project with package management using renv}
 }
 \value{
 New project created according to the CTutils project structure.
@@ -34,7 +37,7 @@ Create a directory structure to match that used by CTutils (PHS). This function 
 }
 \examples{
 \dontrun{
-phsproject(path = file.path(getwd(), "testproj"), author_name = "A Person", n_scripts = 1)
+phsproject(path = file.path(getwd(), "testproj"), author_name = "A Person")
 }
 
 }
