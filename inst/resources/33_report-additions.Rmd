@@ -1,0 +1,11 @@
+<!-- If there have been multiple version of this report,
+     give a brief history of previous versions, updates,
+     changes.  Provide a history of DMC recommendations
+     (if relevant). -->
+
+## Report updates since last DMC
+
+**Static text should be formatted in bold**
+
+Interpretative text should be formatted as normal so that it can
+be easily checked between DMCs.

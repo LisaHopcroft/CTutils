@@ -1,0 +1,209 @@
+#####################################################################
+### Guidance for completion                                       ###
+### =======================                                       ###
+### * Dates should all be YYYY-MM-DD                              ###
+#####################################################################
+
+###---------------------------------------------------------------###
+### Information about pipeline                                    ###
+###---------------------------------------------------------------###
+
+PIPELINE:
+  TEMPLATE: version # Location of template
+  DATA_DIR: dat
+  FLEXTABLE: TRUE # Is flextable available or not?  TRUE/FALSE
+  MISSING_DATA_LIMIT: 10 # When should missing data be flagged (%)
+
+###---------------------------------------------------------------###
+### Information describing the data extract from MACRO            ###
+###---------------------------------------------------------------###
+
+EXTRACT:
+  DATE: "" # Date of extract in the form YYYY-MM-DD
+  LOCATION: dat
+  NAME: "" # Name of extract from MACRO
+  RDAT: "" # Name of extract saved in Rdat format
+
+###---------------------------------------------------------------###
+### Information describing the report                             ###
+###---------------------------------------------------------------###
+
+REPORT:
+  AUTHOR:
+    NAME: "Lisa Hopcroft"
+    EMAIL: "Lisa.Hopcroft@phs.scot"
+    ORGANISATION: "Public Health Scotland"
+    PHONE: ""
+  REVIEWER:
+    NAME: ""
+    EMAIL: ""
+    ORGANISATION: ""
+    PHONE: ""
+  TYPE: "" # Final? Interim?
+  VERSION: "" # Report version
+  BANNER:
+    IMG: "img/" # Image to be used as banner
+
+###---------------------------------------------------------------###
+### Information describing the trial                              ###
+###---------------------------------------------------------------###
+
+TRIAL:
+  NAME: "" # Short name of the trial
+  CI: "" # Who is the CI?
+  DESCRIPTION: "" # Long description of the trial (probably used to generate acronym?)
+  START_DATE: ""  # Date of trial start date in the form YYYY-MM-DD
+  END_DATE: ""  # Date of trial end date in the form YYYY-MM-DD
+  PRIMARY_OBJECTIVE: "" # Primary objective of trial
+  ID:
+    EudraCT: "" # EudraCT ID, e.g., 2017-000619-17
+    ISRCTN: "" # ISRCTN UID, e.g., ISRCTN96273644
+    REC: "" # REC ID, e.g., 17/EE/0240
+  DSD:
+    DOCUMENT: "" # Name of DSD document (XML format)
+    LOCATION: "" # Location of DSD document
+
+SPONSOR:
+  NAME: "Public Health Scotland"
+  ADDRESS:
+    STREET: ""
+    CITY: ""
+    POSTCODE: ""
+    COUNTRY: ""
+  PUBLIC_CONTACT:
+    NAME: "" # PTM on the trial
+    EMAIL:  ""
+    ORGANISATION: ""
+    TELEPHONE:
+      COUNTRY_CODE: "+44"
+      NUMBER: ""
+  SCIENTIFIC_CONTACT:
+    NAME: "" # CI
+    EMAIL: ""
+    ORGANISATION: ""
+    TELEPHONE:
+      COUNTRY_CODE: ""
+      NUMBER: ""
+
+TSC:
+  CHAIR:
+    NAME: ""
+    EMAIL: ""
+    ADDRESS: ""
+
+DMC:
+  COMMITTEE:
+    - NAME:
+      ROLE: Chair
+      EMAIL: mail@XXX.org.uk
+    - NAME:
+      ROLE: Independent statistician
+      EMAIL: mail@YYY.ac.uk
+    - NAME:
+      ROLE: # e.g., oncologist, neurosurgeon etc
+      EMAIL:
+    - NAME: Lisa Hopcroft
+      ROLE: Trial statistician
+      EMAIL: Lisa.Hopcroft@phs.scot
+  MEETINGS: # Examples provided below - amend/add as necessary
+    - TITLE: 1 # DMC number/name
+      DATE: # DMC date (YYY-MM-DD)
+      FREEZE: # Data freeze date
+    - TITLE: "2 (interim)" # DMC number/name
+      DATE: # DMC date (YYY-MM-DD)
+      FREEZE: # Data freeze date
+
+
+###---------------------------------------------------------------###
+### Information regarding where the glossary is to be saved       ###
+###---------------------------------------------------------------###
+
+GLOSSARY:
+  LOCATION: "dat" # The location of the glossary objects
+  FILE: "" # The name of the glossary file (.Rds object)
+  DICTIONARY:
+    FILE: "" # The name of the glossary dictionary file object (.Rds object)
+  VOCAB:
+    FILE: "" # The name of the glossary vocabulary file object (.Rds object)
+  DEPENDENCY:
+    FILE: "" # The name of the dependencies file object *(.Rds object)
+
+
+###---------------------------------------------------------------###
+### Information describing the relevant protocol                  ###
+###---------------------------------------------------------------###
+
+PROTOCOL:
+  VERSION: "" # The protocol version
+  DATE: # The date of the procotol version (YYYY-MM-DD)
+  VISIT: # The visits in chronological order (examples provided below)
+  - Enrolment
+  - Screening
+  - Week_1 # etc
+  - Surgery
+  - Post_Surgery
+  - Miscellaneous
+
+
+###---------------------------------------------------------------###
+### Information describing the relevant SAP                       ###
+###---------------------------------------------------------------###
+
+SAP:
+  VERSION: "" # The SAP version (as text so R doesn't round version numbers)
+  DATE: "" # The date of the SAP version
+
+###---------------------------------------------------------------###
+### Information regarding the generation of EudraCT output        ###
+###---------------------------------------------------------------###
+
+EUDRACT:
+  XML:
+    LOCATION: "! GENERATED/EudraCT"
+  PAEDIATRIC:
+    PIP: "No"
+    ARTICLE_45_APPLIES: "No"
+    ARTICLE_46_APPLIES: "No"
+  ### Enter a description for any specific measures that were put in
+  ### place to protect trial subjects, for example measures to
+  ### minimise pain and distress.
+  # SUBJECT_PROTECTION: ""
+  ### Describe any treatments that are not test or comparator
+  ### products used across all arms/groups in the trial.
+  # NON_TEST_OR_COMPARATOR_TREATMENTS: ""
+  ### Provide a rationale for the use of the comparators used in the
+  ### trial. If evidence is available for its use in the context of
+  ### the trial design, provide the details below.
+  # COMPARATOR_RATIONALE: ""
+  ### Enter key information relevant to the recruitment process for
+  ### the trial (e.g. dates of recruitment period and territories).
+  # RECRUITMENT_DETAILS: ""
+  ### Enter relevant information related to screening (e.g. screening
+  ### criteria, significant events and approaches (e.g. wash-out,
+  ### run-in)). It may also be relevant to provide the number of
+  ### subjects screened for inclusion and a breakdown of the reasons
+  ### for excluding subjects during screening by completing the
+  ### pre-assignment period fields. This could help clarify the
+  ### appropriate patient population for eventual drug use.
+  # SCREENING_DETAILS: ""
+  MEDDRA_SAE:
+    LOCATION: "ref"
+    FILE: "" # PI validated MedDRA coding
+  MEDDRA_AE:
+    LOCATION: "ref"
+    FILE: "" # PI validated MedDRA coding
+  LAST_APPOINTMENT: # List of variables for last appointment
+#    - "Post_Surgery_12_Sign_Symp_Post_Sign_Sym_Date"
+#    - "Post_Surgery_12_Lab_Inv_12wpost_Lab_Inv_Date"
+#    - "Post_Surgery_12_Phys_Exam_Post_Phy_Post_Date"
+#    - "Post_Surgery_12_Tumour_Ass_FU_TA_TL_Date_FU"
+  LTFU_PLANNED: FALSE
+  SUBJECT_PROTECTION: "No specific additional measures were implemented for this trial."
+  NON_TEST_OR_COMPARATOR_TREATMENTS: "-"
+  COMPARATOR_RATIONALE: "-"
+
+
+#####################################################################
+### END OF YAML                                                   ###
+#####################################################################
+

@@ -1,0 +1,17 @@
+
+```{r population_definition}
+
+###################################################################
+### TASK: define the necessary populations for the study        ###
+###################################################################
+
+### Example: create a treated population, by filtering out the 
+###          patients who have been treated.
+# treated_population.d = data_updated %>%
+#   filter( Treated == "1" )
+
+
+EudraCT_data = data_updated
+
+```
+

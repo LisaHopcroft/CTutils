@@ -1,0 +1,38 @@
+# Patient safety
+
+**Static text should be formatted in bold**
+
+Interpretative text should be formatted as normal so that it can
+be easily checked between DMCs.
+
+## Interim criteria to be assessed
+
+### Criteria A
+
+```{r}
+
+```
+
+### Criteria B
+
+```{r}
+
+```
+
+## Severe Adverse Events (N=)
+
+```{r}
+
+```
+
+## Adverse Events / Toxicities (N=)
+
+```{r}
+
+```
+
+## Clavien Dindo post-operative complications (N=)
+
+```{r}
+
+```

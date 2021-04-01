@@ -1,0 +1,81 @@
+
+```{r glossary_extraction}
+
+GLOSSARY.file_list = grep( "^GLOSSARY.*\\.FILE$", ls(), value=TRUE )
+
+if ( all_files_exist( GLOSSARY.file_list ) ) {
+  glossary.dictionary  = readRDS( GLOSSARY.DICTIONARY.FILE )
+  glossary.key         = readRDS( GLOSSARY.FILE            )
+  parameter.vocabulary = readRDS( GLOSSARY.VOCAB.FILE      )
+  print_file_loading_info( GLOSSARY.file_list )
+} else {
+  
+  # Parse the relevant glossary information out of the XML file.
+  # glossary.key = parse_MACRO_DSD_file_for_glossary_and_dependencies( paste(TRIAL.SDD_location,
+  #                                                                          TRIAL.SDD_document,
+  #                                                                          sep="//" ) )
+  DSD_info.raw = parse_MACRO_DSD_file_for_glossary_and_dependencies(
+    paste( TRIAL.DSD.LOCATION, TRIAL.DSD.DOCUMENT, sep="//" ),
+    verbose=TRUE   ,
+    silent =FALSE    )
+  
+  ###################################################################
+  ### TASK: EXPAND CRF PAGES/TEST BATTERIES HERE ####################
+  ###################################################################
+  
+  # Some test batteries are repeated but only appear once in the DSD
+  # XML file.  This bit requires manual intervension to
+  # define which tests are repeated at which visit.
+
+  glossary_expansion = tribble(
+    ~param_visit     , ~param_testbattery, ~param_visit_name,
+    ### EXAMPLE 1: if the "Lab_Inv_FU" CRF page/test battery is repeated
+    ### at the Week 3, 5, 7 and 9 appointments, then add the following lines
+    ### (using the correct text for param_visit and param_visit_name):
+    # "Week_3"         , "Lab_Inv_FU"      , "Week 3",
+    # "Week_5"         , "Lab_Inv_FU"      , "Week 5",
+    # "Week_7"         , "Lab_Inv_FU"      , "Week 7",
+    # "Week_9"         , "Lab_Inv_FU"      , "Week 9",
+    ### EXAMPLE 2: if the "Tumour_Ass_FU", "Phys_Exam_Post" and
+    ### "Sign_Symp_Post" CRF pages/test batteries are repeated
+    ### at the 12wk Post-surgical visit, then add the following lines
+    ### (using the correct text for param_visit and param_visit_name):
+    # "Post_Surgery_12", "Tumour_Ass_FU"   , "12wk Post Surgery",
+    # "Post_Surgery_12", "Phys_Exam_Post"  , "12wk Post Surgery",
+    # "Post_Surgery_12", "Sign_Symp_Post"  , "12wk Post Surgery"
+    )
+  
+  
+  # glossary.dictionary = expand_glossary( glossary.key,
+  #                                   glossary_expansion )
+  DSD_info.expanded = expand_glossary( DSD_info.raw,
+                                       glossary_expansion,
+                                       verbose = FALSE,
+                                       silent = FALSE )
+  
+  
+  glossary.dictionary = DSD_info.expanded %>%
+    select( param_desc,
+            param_name,
+            param_closedvocab,
+            param_visit,
+            param_visit_name,
+            param_testbattery,
+            param_testbattery_name,
+            column_name )
+  
+  saveRDS(glossary.dictionary, file=GLOSSARY.DICTIONARY.FILE )
+  
+  glossary.key = as.list(glossary.dictionary %>% pull(param_desc))
+  names(glossary.key) = as.character(glossary.dictionary %>% pull(column_name))
+  
+  parameter.vocabulary = as.list( glossary.dictionary %>% pull( param_closedvocab ) )
+  names( parameter.vocabulary) = as.character(glossary.dictionary %>% pull(column_name))
+  
+  saveRDS( glossary.key        , file=GLOSSARY.FILE)
+  saveRDS( parameter.vocabulary, file=GLOSSARY.VOCAB.FILE )
+  
+}
+
+```
+

@@ -1,0 +1,9 @@
+language:
+  ui:
+    chapter_name: "Section"
+delete_merged_file: true
+rmd_files: [
+  "index_supporting.Rmd",
+  "99_EudraCT-report.Rmd",
+  "90_file-information.Rmd"
+  ]

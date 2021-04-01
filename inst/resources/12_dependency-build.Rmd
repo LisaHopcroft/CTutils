@@ -1,0 +1,50 @@
+
+```{r dependency_build}
+
+if ( file.exists( GLOSSARY.DEPENDENCY.FILE ) ) {
+  dependency.map.extended = readRDS( GLOSSARY.DEPENDENCY.FILE )
+  print_file_loading_info( "GLOSSARY.DEPENDENCY.FILE" )
+} else {
+  
+  dependency.map = expand_dependency_locations_in_glossary( DSD_info.expanded ) %>%
+    select( column_name,
+            param_closedvocab_list,
+            param_dependencies,
+            param_dependencies.SAVED,
+            amended ) %>%
+    mutate( repeated_row_dependencies =
+              str_detect( param_dependencies, "\\(\\s*(this|previous|next)\\s*\\)" ) |
+              str_detect( param_dependencies, "question_cycle" ) ) %>%
+    mutate( param_dependencies = str_replace_all(param_dependencies, ":", "_") )
+  
+  ######################################################################
+  ### TASK: add additional dependencies by hand ########################
+  ######################################################################
+
+  manual_dependencies.list = tribble(
+    ~field_match                         , ~new_dependency,
+    ### If the field "AGE" is only expected to appear where "Label" is not
+    ### empty, then the dependency would be added as follows:
+    # "^AGE"         , "Label!=''",
+    ### Note that you can use regular expressions to specify the field.
+    ### For example:
+    # "^Screening_Signs_Symptoms_Sign_Sym_[^(Pain)|^(Oth)]", "Screening_Signs_Symptoms_Sign_Sym_Y_N=1"
+
+  )
+  
+  dependency.map.extended = dependency.map
+  
+  for ( i in 1:nrow( manual_dependencies.list ) ) {
+    
+    dependency.map.extended = add_dependency_to_fields( dependency.map.extended,
+                                                        field_match = manual_dependencies.list$field_match[i],
+                                                        new_dependency = manual_dependencies.list$new_dependency[i],
+                                                        verbose = TRUE )
+  }
+  
+  saveRDS(dependency.map.extended, file=GLOSSARY.DEPENDENCY.FILE )
+}
+
+```
+  
+  

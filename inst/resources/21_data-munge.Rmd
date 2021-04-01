@@ -1,0 +1,36 @@
+```{r data_clean}
+data_updated = data_in # %>% Add mutate statements if necessary
+
+###################################################################
+### TASK: add the Country and the Age groups that will inform   ###
+###       the EudraCT report at the end of the trial.           ###
+###################################################################
+
+### Example: Adding country for EudraCT extract; this example is
+###          for the situations where all patients are known to be
+###          in the same country. If the trial ran in different
+###          contries, it may be that a case_when() statement is 
+###          required to annotate each patient as being from the
+###          correct country.
+###          
+# data_updated = data_updated %>%
+#   mutate( Country = "United Kingdom" )
+
+### Example: Adding Age groups for EudraCT extract; this utility
+###          function is included in the CTutils package.
+###          
+# data_updated$EudraCT_agegroup = factor( convert_dates_to_EudraCT_age_categories(
+#   dob = data_updated$Enrolment_Elig_Checklist_DOB,
+#   dor = data_updated$Enrolment_Trial_Enrolment_Date_Enrol
+# ), levels = c( "Newborns (0-27 days)",
+#                "Infants and toddlers (28 days-23 months)",
+#                "Children (2-11 years)",
+#                "Adolescents (12-17 years)",
+#                "Adults (18-64 years)",
+#                "From 65-84 years",
+#                "85 years and over"
+#   ) )
+
+```
+
+

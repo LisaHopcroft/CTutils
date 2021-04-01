@@ -1,0 +1,75 @@
+```{r title_page}
+include_graphics( path = REPORT.BANNER.IMG )
+```
+
+**`r TRIAL.NAME`**
+
+`r TRIAL.DESCRIPTION`
+
+**`r REPORT.TYPE` report**
+
+|                    |                                         |
+| ------------------ | --------------------------------------- |
+| *Report version*     | `r REPORT.VERSION`                      |
+| *Report Date*        | `r format(today(),format="%d %B %Y")`   |
+| *Database lock date* | `r format(as.Date(EXTRACT.DATE,format="%Y-%m-%d"),format="%d %B %Y")` |
+| *Author*             | `r REPORT.AUTHOR.NAME`                       |
+
+**Trial documentation**
+
+|                    |                                         |
+| ------------------ | --------------------------------------- |
+| *Protocol*         | v. `r PROTOCOL.VERSION` |
+| *SAP*              | v. `r SAP.VERSION`      |
+| *Trial Coordinating Centre* | Cancer Clinical Trials Unit, Scotland (CaCTUS). |
+|                             | Scottish Clinical Trials Research Unit (SCTRU), Edinburgh. |
+
+**External identifiers**
+
+|                |                |
+| -------------- | -------------- |
+| ISRCTN         | `r TRIAL.ID.ISRCTN`  |
+| EudraCT Number | `r TRIAL.ID.EudraCT` |
+| REC reference  | `r TRIAL.ID.REC`     |
+
+
+**Checked, reviewed and approved by**
+
+```{r checkandreview_chunk}
+
+reviewing.info = tribble(
+  ~Role                    ,~Name           ,~Signature,~Date,
+  "Statistician (author)"  , REPORT.AUTHOR.NAME  ,        NA,   NA,
+  "Statistician (reviewer)", REPORT.REVIEWER.NAME,        NA,   NA#,
+  #"Chief investigator"     ,              NA,        NA,   NA
+)
+
+if ( PIPELINE.FLEXTABLE ) {
+flextable(reviewing.info) %>%
+  autofit() %>%
+  bold( bold = TRUE, part = "header" ) %>%
+  border_remove() %>%
+  bg( part="header", bg=tbl_fill.colours[["grey"]]) %>%
+  border(j=3, part="body",border = tbl_border.standard) %>%
+  width(j=3, width=1.5) %>%
+  width(j=4, width=0.7) %>%
+  height(height=0.7) %>%
+  align(part="header",align="left") %>%
+  valign(part="body",valign="top") 
+} else {
+  knitr::kable( reviewing.info )
+}
+
+```
+
+`r ifelse( REPORT.TYPE=="Final", "", "NB. CI approval only required for final report" )`
+
+**Author contact details**
+
+|               |                 |
+| ------------- | --------------- |
+| Name          | `r REPORT.AUTHOR.NAME`   |
+| Affiliation   | `r REPORT.AUTHOR.ORGANISATION`   |
+| Email address | `r REPORT.AUTHOR.EMAIL` |
+| Phone         | `r REPORT.AUTHOR.PHONE` |
+

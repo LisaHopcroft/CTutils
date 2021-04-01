@@ -1,0 +1,38 @@
+---
+title: "<<TRIAL_NAME>>"
+site: bookdown::bookdown_site
+author: "Lisa Hopcroft"
+output:
+  bookdown::word_document2:
+    toc: yes
+    toc_depth: 1
+    reference_docx: # Reference fotmatting
+---
+
+
+
+```{r, results='hide', message=FALSE, warning=FALSE, echo=FALSE}
+library( CTutils   )
+library( tidyverse )
+source( "launch_environment.R" )
+read_report_YAML()
+
+# Uncomment if RECIST values are required
+# initialise_RECIST_VALUES()
+# RECIST.VALUES.MAP = list (
+#   COMPLETE = RECIST.COMPLETE.VALUE,
+#   PARTIAL = RECIST.PARTIAL.VALUE,
+#   PROGRESSIVE_PERC = RECIST.PROGRESSIVE_PERC.VALUE,
+#   PROGRESSIVE_ABS = RECIST.PROGRESSIVE_ABS.VALUE
+# )
+
+```
+
+```{r data_queries_setup, echo=FALSE}
+data_queries.list = data.frame(
+  label      = character(),
+  message    = character(),
+  DMC_ref    = character(),
+  CRF_ref    = character()
+)
+```

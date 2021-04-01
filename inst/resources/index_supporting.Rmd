@@ -1,0 +1,26 @@
+---
+title: "<<TRIAL_NAME>> (Supporting documentation)"
+site: bookdown::bookdown_site
+author: "Lisa Hopcroft"
+output:
+  bookdown::word_document2:
+    toc: yes
+    toc_depth: 1
+    reference_docx: # Reference formatting
+---
+
+
+
+```{r, results='hide', message=FALSE, warning=FALSE, echo=FALSE}
+library( CTutils   )
+library( tidyverse )
+source( "launch_environment.R" )
+read_report_YAML()
+
+```
+
+```{r, results='hide', message=FALSE, warning=FALSE, echo=FALSE }
+load( paste( EXTRACT.LOCATION,
+             EXTRACT.RDAT,
+             sep="//") )
+```

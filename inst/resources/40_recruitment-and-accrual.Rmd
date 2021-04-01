@@ -1,0 +1,30 @@
+# Recruitment and accrual
+
+**Static text should be formatted in bold**
+
+Interpretative text should be formatted as normal so that it can
+be easily checked between DMCs.
+
+## Recruitment by site
+
+
+```{r}
+
+```
+
+
+## Overall recruitment 
+
+```{r}
+
+```
+
+
+## Populations
+
+<!-- Consider adding definitions of the populations here. -->
+
+```{r}
+
+```
+

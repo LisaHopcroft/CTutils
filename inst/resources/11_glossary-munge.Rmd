@@ -1,0 +1,13 @@
+
+```{r glossary_munge}
+###################################################################
+### TASK: if anything needs to be edited in the glossary        ###
+###       structures it should be done here.  For example, if   ###
+###       the parameter vocabulary needs updated, additional    ###
+###       glossary terms to be added (e.g. for variables        ###
+###       introduced by the analyst later in the  pipeline,     ###
+###       glossary edits to make presentation clearer           ###
+###       (e.g., including units in a blood test name).         ###
+###################################################################
+```
+

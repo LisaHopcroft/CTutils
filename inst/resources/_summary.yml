@@ -1,0 +1,12 @@
+language:
+  ui:
+    chapter_name: "Section"
+delete_merged_file: true
+rmd_files: [
+  "index_supporting.Rmd",
+  "31_report-title-page.Rmd",
+  "33_summary-preamble.Rmd",
+  "40_recruitment-and-accrual.Rmd",
+  "41_patient-safety.Rmd",
+  "90_file-information.Rmd",
+  ]

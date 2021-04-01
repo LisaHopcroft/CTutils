@@ -1,0 +1,39 @@
+```{r report_information}
+###################################################################
+### TASK: define a consistent ggplot theme to use in the report ###
+###################################################################
+
+# theme_TRIAL = theme_bw() +
+#   theme( axis.title = element_text( face = "bold" ),
+#          axis.text.x = element_text( angle=90,
+#                                      vjust=0,
+#                                      hjust=0.5 ) )
+
+```
+
+```{r table_formatting_variables}
+
+###################################################################
+### TASK: define a consistent ggplot theme to use in the report ###
+###################################################################
+
+### Several examples are shown below:
+# options(knitr.kable.NA = '-')
+# 
+# tbl_border.standard = fp_border(color="black", width = 1)
+# tbl_border.heavy    = fp_border(color="black", width = 2)
+# 
+# tbl_fill.colours = c(
+# "grey"   = "#D3D3D3",
+# "yellow" = "#F9E79F",
+# "red"    = "#F5B7B1"
+# )
+# 
+# table_indent = 15
+# 
+# highlight_colour.RED     = "#FFB4A2"
+# highlight_colour.GREEN   = "#BCFFA2"
+# highlight_colour.YELLOW  = "#FBFFA2"
+
+
+```

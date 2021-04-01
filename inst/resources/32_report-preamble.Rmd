@@ -1,0 +1,24 @@
+# Introduction
+
+**This `r REPORT.TYPE` report has been developed for the `r TRIAL.NAME` trial.  This report details all statistical analyses as required by the `r TRIAL.NAME` SAP v.`r SAP.VERSION`.**
+
+`if (REPORT.TYPE == "Final" ) cat( sprintf( "**This report is *ONLY* open to the DMC and study statisticians(s) who is/are responsible for the preparation of this report.**" ) )`
+
+
+```{r DMC_committee}
+DMC_table = print_flextable( DMC.COMMITTEE )
+
+DMC_table %>%
+  align_nottext_col(align = "left")
+
+```
+
+**After this report has been reviewed by the DMC, the DMC chair will inform the TSC chair the DMC's recommendations by providing a summary *WITHOUT* listing any DMC report details.**
+
+
+| **TSC chair** |                       |
+| ------------- | --------------------- |
+| Name          | `r TSC.CHAIR.NAME`    |
+| Email address | `r TSC.CHAIR.EMAIL`   |
+| Address       | `r TSC.CHAIR.ADDRESS` | 
+

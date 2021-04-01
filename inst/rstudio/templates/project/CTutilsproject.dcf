@@ -1,0 +1,26 @@
+Binding: CTutilsproject
+Title: PHS CTutils project structure
+
+Parameter: trial_name
+Widget: TextInput
+Label: Trial name
+
+Parameter: author_name
+Widget: TextInput
+Label: Author
+Default: Lisa Hopcroft
+
+Parameter: author_email
+Widget: TextInput
+Label: Author contact email
+Default: Lisa.Hopcroft@phs.scot
+
+Parameter: author_organisation
+Widget: TextInput
+Label: Author organisation
+Default: Public Health Scotland
+
+Parameter: git
+Widget: CheckboxInput
+Label: Initialise with Git
+Default: Off

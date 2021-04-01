@@ -1,0 +1,9 @@
+# Further Information
+
+<!-- This should be run if any files are read in 20_data-extraction.Rmd -->
+
+Files used in this analysis:
+
+```{r file_info}
+print_flextable( file_information )
+```

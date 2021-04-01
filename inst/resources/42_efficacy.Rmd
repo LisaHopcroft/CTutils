@@ -1,0 +1,26 @@
+<!-- If required, include any relevant discussion of data cleaning,
+     self-evident corrections, and so on. -->
+
+# Efficacy
+
+**Static text should be formatted in bold**
+
+Interpretative text should be formatted as normal so that it can
+be easily checked between DMCs.
+
+## Relevant discussions around efficacy data
+
+```{r}
+
+```
+
+
+## Efficacy endpoint 1 (N=)
+
+
+```{r}
+
+```
+
+
+

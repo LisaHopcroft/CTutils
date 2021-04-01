@@ -1,0 +1,21 @@
+
+```{r data_import}
+file_list = paste( EXTRACT.LOCATION,
+                   EXTRACT.NAME,
+                   sep="//" )
+
+file_information = tibble( f = file_list ) %>%
+  mutate( Name = basename(f),
+          Size = sprintf( "%.0fKb", round( file.size(f) / 1024) ),
+          Type = toupper(str_replace(Name,".*\\.","")),
+          md5sum = tools::md5sum(f)) %>%
+  select(-f)
+
+
+this_file = file_list[1]
+
+data_in_raw = read.csv( this_file )
+data_in = data_in_raw
+colnames(data_in) <- str_replace_all(colnames(data_in), "[:punct:]", "_")
+
+```

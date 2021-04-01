@@ -1,0 +1,719 @@
+# EUdraCT report
+
+**The information required for the EudraCT upload is provided in this report.
+Also generated is an XML file for the adverse events upload.**
+
+**This report is heavily reliant on the relevant information being completed
+in the settings.yml file. Please ensure that this file is fully population
+withthe relevant information.**
+
+```{r Eudract_intro}
+
+vocab = CTutils::read_EudraCT_vocabulary()
+
+EUdraCT_vocabulary = vocab$EudraCT
+RMS_vocabulary = vocab$RMS
+
+print_info = function( info_var ) {
+  info_var.string = deparse(substitute(info_var))
+  if( !exists(info_var.string) ) {
+    info_var = "[MISSING]"
+  }
+  return( info_var )
+}
+
+```
+
+
+
+## Trial index
+
+|                        |                                         |
+| ---------------------- | --------------------------------------- |
+| *Friendly description* | `r print_info(TRIAL.DESCRIPTION)`       |
+
+Summary attachments to include:
+
+1. Final report to DMC
+2. Published article
+
+## Trial information
+
+### Trial identification
+
+|                        |                                         |
+| ---------------------- | --------------------------------------- |
+| **EudraCT number** | `r print_info(TRIAL.ID.EudraCT)` |
+| **Sponsor protocol code** | `r print_info(TRIAL.NAME)` v. `r print_info(PROTOCOL.VERSION)` (dated `r print_info(PROTOCOL.DATE)`) |
+| **Full title of trial** | `r print_info(TRIAL.DESCRIPTION)` |
+
+
+### Additional Study identifiers
+
+|                        |                                         |
+| ---------------------- | --------------------------------------- |
+| **ISRCTN number** | `r print_info(TRIAL.ID.ISRCTN)` |
+| **ClinicalTrials.gov number** | `r print_info( TRIAL.ID.NCT )` |
+| **WHO universal trial number** | `r print_info( TRIAL.ID.WHO )` |
+
+Other identifiers provided:
+
+
+```{r results="asis"}
+
+other_ids = ls( pattern="TRIAL\\.ID\\..*" ) %>% 
+  discard( ~ str_detect(.x, pattern="ISRCTN|REC|EudraCT") )
+
+if ( length( other_ids ) > 0 ) {
+  
+  other_ids.list = map( other_ids, get ) %>%
+    set_names( other_ids %>% str_replace( "TRIAL\\.ID\\.", "" ) )
+  
+  for( id_i in 1:length(other_ids.list) ) {
+    
+    cat( sprintf( "- **%s ID**: %s\n",
+                  names(other_ids.list)[id_i],
+                  other_ids.list[id_i]) )
+  }
+} else {
+  cat( sprintf( "No other trial identifiers have been specified." ))
+}
+
+```
+
+## Sponsor details
+
+|                        |                                         |
+| ---------------------- | --------------------------------------- |
+| **Name of organisation** | `r print_info( SPONSOR.NAME )` |
+| **Street address** | `r print_info( SPONSOR.ADDRESS.STREET )` |
+| **Town/city** | `r print_info( SPONSOR.ADDRESS.CITY )` |
+| **Postcode** | `r print_info( SPONSOR.ADDRESS.POSTCODE )` |
+
+### Scientific contact point
+
+|                        |                                         |
+| ---------------------- | --------------------------------------- |
+| **Name of organisation** | `r print_info( SPONSOR.SCIENTIFIC_CONTACT.ORGANISATION )` |
+| **Functional contact point name** | `r print_info( SPONSOR.SCIENTIFIC_CONTACT.NAME )` |
+| **Telephone number** | +`r print_info( SPONSOR.SCIENTIFIC_CONTACT.TELEPHONE.COUNTRY_CODE)` `r print_info( SPONSOR.SCIENTIFIC_CONTACT.TELEPHONE.NUMBER)` |
+| **Email address** | `r print_info( SPONSOR.SCIENTIFIC_CONTACT.EMAIL)` |
+
+### Public contact point
+
+|                        |                                         |
+| ---------------------- | --------------------------------------- |
+| **Name of organisation** | `r print_info( SPONSOR.PUBLIC_CONTACT.ORGANISATION )` |
+| **Functional contact point name** | `r print_info( SPONSOR.PUBLIC_CONTACT.NAME )` |
+| **Telephone number** | +`r print_info( SPONSOR.PUBLIC_CONTACT.TELEPHONE.COUNTRY_CODE)` `r print_info( SPONSOR.PUBLIC_CONTACT.TELEPHONE.NUMBER)` |
+| **Email address** | `r print_info( SPONSOR.PUBLIC_CONTACT.EMAIL)` |
+
+
+## Paediatric regulatory details
+
+**Is trial part of an agreed paediatric investigation plan (PIP)?** `r print_info(EUDRACT.PAEDIATRIC.PIP)`
+
+**Does article 45 of Regulation (EC) No 1901/2006 apply to this trial?** `r print_info(EUDRACT.PAEDIATRIC.ARTICLE_45_APPLIES)`
+
+**Does article 46 of Regulation (EC) No 1901/2006 apply to this trial?** `r print_info(EUDRACT.PAEDIATRIC.ARTICLE_46_APPLIES)`
+
+
+## Results analysis stage
+
+```{r}
+
+# date_of_final_analysis = format(as.Date(EXTRACT.DATE,format="%Y-%m-%d"),format="%d %B %Y")
+# 
+# primary_completion_date = ITT_population.d_extended %>%
+#   select( Label, ends_with( "Date_Form_Comp" ) ) %>%
+#   select( -contains( "Scan_review" ) ) %>% 
+#   pivot_longer( -Label ) %>% arrange( desc(dmy(value)) ) %>%
+#   pull( value ) %>%
+#   head(1) %>%
+#   as.character()
+# 
+# last_appointment_columns = grep( ls( ), pattern = "EUDRACT.LAST_APPOINTMENT", value=T ) %>% 
+#   lapply( get ) %>% unlist 
+# 
+# global_end_of_trial_date = ITT_population.d_extended %>%
+#   select( Label, !!!syms( last_appointment_columns ) ) %>% 
+#   pivot_longer( -Label ) %>% 
+#   filter( value != "" ) %>% 
+#   arrange( desc( dmy(value) ) ) %>% 
+#   pull( value ) %>% 
+#   head(1) %>% 
+#   as.character() 
+
+
+```
+
+
+|                        |                                         |
+| ---------------------- | --------------------------------------- |
+| **Analysis stage** | `r print_info( REPORT.TYPE )` |
+| **Date of interim/final analysis** | `r date_of_final_analysis` |
+
+
+|                        |                                         |
+| ---------------------- | --------------------------------------- |
+| **Is this the analysis of the primary completion data?** | TBD |
+| **Primary completion date** | `r primary_completion_date` |
+
+|                        |                                         |
+| ---------------------- | --------------------------------------- |
+| **Global end of trial date reached?** | Yes |
+| **Global end of trial date** | `r global_end_of_trial_date` |
+| **Was the trial ended prematurely?** | No |
+
+
+## General information about the trial
+
+**Main objective of the trial**
+
+`r TRIAL.PRIMARY_OBJECTIVE`
+
+**Actual start date of recruitment**
+
+`r TRIAL.START_DATE %>% as.character`
+
+**Long term follow-up planned?**
+
+`r EUDRACT.LTFU_PLANNED`
+
+**Independent data monitoring committee (IDMC) involvement?**
+
+`r ( DMC.COMMITTEE %>% nrow ) > 1 `
+
+**Protection of trial subjects**
+
+`r print_info( EUDRACT.SUBJECT_PROTECTION )`
+
+**Background therapy**
+
+`r print_info( EUDRACT.NON_TEST_OR_COMPARATOR_TREATMENTS )`
+
+**Evidence for comparator(s)**
+
+`r print_info( EUDRACT.COMPARATOR_RATIONALE )`
+
+## Population of trial subjects
+
+### Subject number per country
+
+**Note that this information may need to be added to the relevant
+data frame.**
+
+```{r country_counts}
+
+if ( str_detect( "Country", EudraCT_data %>% colnames ) %>% any ) {
+  
+  countries = EudraCT_data %>%
+    select( Label, Country ) %>%
+    unique %>% pull( Country )
+  
+  country_table = table( countries ) %>%
+    as_tibble( )
+  
+  country_table = country_table %>% 
+    add_row( countries = "Total",
+             n = sum( country_table$n ))
+  
+  knitr::kable( country_table )
+}
+
+```
+
+**Age group breakdown for trial**
+
+```{r agegroups}
+agegroup.tibble = EudraCT_data$EudraCT_agegroup %>%
+  discard( ~is.na(.x) ) %>%
+  as_tibble %>%
+  group_by( value, .drop=FALSE ) %>%
+  dplyr::summarise( count = n() ) %>%
+  mutate( value = as.character(value)) %>% 
+  dplyr::rename( Agegroup = value )
+
+knitr::kable( agegroup.tibble )
+
+```
+
+## Subject disposition
+
+**Recruitment details**
+
+`r print_info(EUDRACT.RECRUITMENT_DETAILS)`
+
+## Pre-assignment
+
+**Screening details**
+
+`r print_info(EUDRACT.SCREENING_DETAILS)`
+
+## Arm information (copy this section for each arm)
+
+```{r}
+# patients_enrolled = ITT_population.d_extended %>%
+#   filter( Label != "" ) %>%
+#   pull(Label) %>%
+#   unique ()
+# 
+# patients_dropouts = ITT_population.d_extended %>%
+#   filter( Miscellaneous_Early_Termin_Trial_ID != "" ) %>%
+#   select( Label, starts_with( "Miscellaneous_Early_Termin" ) ) %>%
+#   pull( Label ) %>%
+#   unique()
+# 
+# n_enrolled = patients_enrolled %>% length( ) 
+# n_completed = setdiff( patients_enrolled, patients_dropouts ) %>% length( )
+
+```
+
+
+<!--Number of patients who started on this arm: `r n_enrolled`
+Number of patients who finished on this arm: `r n_completed`-->
+
+
+
+Reasons for dropping out:
+
+Disease progression:
+
+```{r}
+
+# do_count( this_data = ITT_population.d_extended %>%
+#             filter( Miscellaneous_Early_Termin_Trial_ID != "" ),
+#           this_var = quo( Miscellaneous_Early_Termin_ET_Dis_Prog ),
+# 	  key_for_variables = glossary.key,
+# 	  missing_data_limit = PIPELINE.MISSING_DATA_LIMIT )
+
+```
+
+Other reasons:
+
+```{r}
+# 
+# do_count( this_data = ITT_population.d_extended %>%
+#             filter( Miscellaneous_Early_Termin_Trial_ID != "" ) %>% 
+#             filter( Miscellaneous_Early_Termin_ET_Other_Reas  == "Yes"),
+#           this_var = quos( Miscellaneous_Early_Termin_ET_Wthdrw_Cons,
+#                            Miscellaneous_Early_Termin_ET_Pat_LTFU,
+#                            Miscellaneous_Early_Termin_ET_PI_Decision,
+#                            Miscellaneous_Early_Termin_ET_Non_Comply,
+#                            Miscellaneous_Early_Termin_ET_Not_Start,
+#                            Miscellaneous_Early_Termin_ET_Death ),
+# 	  key_for_variables = glossary.key,
+# 	  missing_data_limit = PIPELINE.MISSING_DATA_LIMIT )
+# 
+# reason_per_patient = ITT_population.d_extended %>%
+#   filter( Miscellaneous_Early_Termin_Trial_ID != "" ) %>% 
+#   filter( Miscellaneous_Early_Termin_ET_Other_Reas  == "Yes") %>%
+#   select( Label,
+#           Miscellaneous_Early_Termin_ET_Wthdrw_Cons,
+#           Miscellaneous_Early_Termin_ET_Pat_LTFU,
+#           Miscellaneous_Early_Termin_ET_PI_Decision,
+#           Miscellaneous_Early_Termin_ET_Non_Comply,
+#           Miscellaneous_Early_Termin_ET_Not_Start,
+#           Miscellaneous_Early_Termin_ET_Death )
+# 
+# reason_check = reason_per_patient %>% 
+#   pivot_longer( -Label,
+#                 names_to = "reason",
+#                 values_to = "response") %>% 
+#   group_by( Label ) %>% 
+#   summarise( REASON_PRESENT = any( response == "Yes"))
+
+```
+
+`r ifelse( reason_check %>% pull( REASON_PRESENT ) %>% all, "", print_error( "Not all patients have a reason provided." ) )`
+
+```{r}
+
+# knitr::kable(PERIOD.INFO %>%
+#                mutate(section_header = sprintf("**%s**",section_header)) %>%
+#                mutate(section_header = str_replace(section_header,"\\*\\*\\*\\*","")) %>%
+#                mutate(question = sprintf("**%s**",question)) %>% 
+#                mutate(question = str_replace(question,"\\*\\*\\*\\*","")),
+#              col.names=rep.int("",ncol(PERIOD.INFO)))
+ 
+```
+
+## Number of patients in each population (e.g., ITT, safety etc)
+
+<!--ITT: `r n.ITT`-->
+<!--Evaluable: `r n.evaluable`-->
+<!--Safety: `r n.evaluable`-->
+
+## Age/gender counts per population
+
+ITT population
+
+```{r}
+
+# ITT_population.d %>% pull( EudraCT_agegroup ) %>% table
+# 
+# do_summary(ITT_population.d,
+#            quo( Age),
+# 	  key_for_variables = glossary.key,
+# 	  missing_data_limit = PIPELINE.MISSING_DATA_LIMIT )
+# 
+# ITT_population.d %>% pull( Enrolment_Trial_Enrolment_Sex ) %>% table
+
+
+```
+
+Safety/evaluable population
+
+```{r}
+
+# treated_population.d %>% pull( EudraCT_agegroup ) %>% table
+# 
+# do_summary(treated_population.d,
+#            quo( Age),
+# 	  key_for_variables = glossary.key,
+# 	  missing_data_limit = PIPELINE.MISSING_DATA_LIMIT )
+# 
+# treated_population.d %>% pull( Enrolment_Trial_Enrolment_Sex ) %>% table
+
+```
+
+Surgical population
+
+```{r}
+# 
+# ITT_population.d %>% filter( SURGERY_PERFORMED == "Yes" ) %>%  pull( EudraCT_agegroup ) %>% table
+# 
+# do_summary(ITT_population.d %>% filter( SURGERY_PERFORMED == "Yes" ),
+#            quo( Age),
+# 	  key_for_variables = glossary.key,
+# 	  missing_data_limit = PIPELINE.MISSING_DATA_LIMIT )
+# 
+# ITT_population.d %>% pull( Enrolment_Trial_Enrolment_Sex ) %>% table
+
+
+```
+
+### Generating the SAE and AE XML uploads
+
+```{r CTCAE1}
+
+### Example shown below for NAXIVA trial
+
+# SAE.data = ITT_population.d_extended %>%
+#   filter( !is.na(SAE_Reporting_SAE_SAE_Num) ) %>%
+#   select( SAE_Reporting_SAE_SAE_Num,
+#           Label,
+#           
+#           # SAE_Reporting_SAE_SAE_Axi_Related,
+#           SAE_Reporting_SAE_SAE_Oth_Related,
+#           SAE_Reporting_SAE_SAE_Oth_Spec,
+#           SAE_Reporting_SAE_SAE_Pro_Related,
+#           SAE_Reporting_SAE_SAE_Pro_Spec,
+#           
+#           SAE_Reporting_SAE_2_SAE_Ax_TDD,
+#           SAE_Reporting_SAE_2_SAE_Ax_Freq,
+#           SAE_Reporting_SAE_2_SAE_Ax_Start,
+#           SAE_Reporting_SAE_2_SAE_Ax_Stop,
+#           SAE_Reporting_SAE_SAE_Event,
+#           SAE_Reporting_SAE_SAE_Symp_Start,
+#           
+#           # SAE type?
+#           SAE_Reporting_SAE_SAE_Death,
+#           SAE_Reporting_SAE_SAE_Hosp,
+#           SAE_Reporting_SAE_SAE_Defect,
+#           SAE_Reporting_SAE_SAE_Life,
+#           SAE_Reporting_SAE_SAE_Incapacity,
+#           SAE_Reporting_SAE_SAE_Important,
+#           
+#           SAE_Reporting_SAE_SAE_Grade,
+#           SAE_Reporting_SAE_SAE_Axi_Related, # site investigator causailty
+#           SAE_Reporting_SAE_SAE_CI_Cause,    # CI causality
+#           SAE_Reporting_SAE_SAE_Exp_Unexp,
+#           
+#           ### SUSAR?          
+#           #SAE_Reporting_SAE_SAE_Exp_Unexp = Unexpected
+#           #SAE_Reporting_SAE_SAE_CI_Cause = YES
+#           
+#           SAE_Reporting_SAE_2_SAE_Outcome
+#   ) %>%
+#   group_by( SAE_Reporting_SAE_SAE_Num ) %>%
+#   mutate( SUSAR = ifelse(SAE_Reporting_SAE_SAE_Exp_Unexp=="Unexpected" &
+#                            SAE_Reporting_SAE_SAE_CI_Cause=="Yes",
+#                          "Yes","No"),
+#           SAEtype = paste(
+#             ifelse(SAE_Reporting_SAE_SAE_Death=="Yes",
+#                    "Death",
+#                    ""),
+#             ifelse(SAE_Reporting_SAE_SAE_Hosp =="Yes",
+#                    "Hospitalisation",
+#                    ""),
+#             ifelse(SAE_Reporting_SAE_SAE_Defect=="Yes",
+#                    "Birth defect",
+#                    ""),
+#             ifelse(SAE_Reporting_SAE_SAE_Life=="Yes",
+#                    "Life threatening",
+#                    ""),
+#             ifelse(SAE_Reporting_SAE_SAE_Incapacity=="Yes",
+#                    "Disability/incapacity",
+#                    ""),
+#             collapse="\n"
+#           ) ) %>%
+#   select( -SAE_Reporting_SAE_SAE_Death,
+#           -SAE_Reporting_SAE_SAE_Hosp,
+#           -SAE_Reporting_SAE_SAE_Defect,
+#           -SAE_Reporting_SAE_SAE_Life,
+#           -SAE_Reporting_SAE_SAE_Incapacity,
+#           -SAE_Reporting_SAE_SAE_Important) %>%
+#   
+#   mutate( suspect = paste(
+#     ifelse(SAE_Reporting_SAE_SAE_Pro_Related=="Yes",
+#            sprintf( "%s: %s",
+#                     glossary.key[["SAE_Reporting_SAE_SAE_Pro_Related"]],
+#                     SAE_Reporting_SAE_SAE_Pro_Spec),
+#            ""),
+#     ifelse(SAE_Reporting_SAE_SAE_Oth_Related=="Yes",
+#            sprintf( "%s: %s",
+#                     glossary.key[["SAE_Reporting_SAE_SAE_Oth_Related"]],
+#                     SAE_Reporting_SAE_SAE_Oth_Spec),
+#            ""),
+#     collapse="\n"
+#   ) ) %>%
+#   select( -SAE_Reporting_SAE_SAE_Oth_Related,
+#           -SAE_Reporting_SAE_SAE_Oth_Spec,
+#           -SAE_Reporting_SAE_SAE_Pro_Related,
+#           -SAE_Reporting_SAE_SAE_Pro_Spec ) %>%
+#   mutate(IMPdose = sprintf( "%s, %s",
+#                             SAE_Reporting_SAE_2_SAE_Ax_TDD,
+#                             SAE_Reporting_SAE_2_SAE_Ax_Freq)) %>%
+#   select( -SAE_Reporting_SAE_2_SAE_Ax_TDD,
+#           -SAE_Reporting_SAE_2_SAE_Ax_Freq ) %>%
+#   mutate( studydrug = sprintf( "Started: %s\nStopped: %s",
+#                                dmy(SAE_Reporting_SAE_2_SAE_Ax_Start),
+#                                dmy(SAE_Reporting_SAE_2_SAE_Ax_Stop) )) %>%
+#   select( -SAE_Reporting_SAE_2_SAE_Ax_Start,
+#           -SAE_Reporting_SAE_2_SAE_Ax_Stop ) %>%
+#   select( SAE_Reporting_SAE_SAE_Num,
+#           Label,
+#           suspect,
+#           IMPdose,
+#           studydrug,
+#           SAE_Reporting_SAE_SAE_Event,
+#           SAE_Reporting_SAE_SAE_Symp_Start,
+#           SAEtype,
+#           SAE_Reporting_SAE_SAE_Grade,
+#           SAE_Reporting_SAE_SAE_Axi_Related,
+#           SAE_Reporting_SAE_SAE_CI_Cause,
+#           SAE_Reporting_SAE_SAE_Exp_Unexp,
+#           SUSAR,
+#           SAE_Reporting_SAE_2_SAE_Outcome
+#   ) %>%
+#   arrange( SAE_Reporting_SAE_SAE_Num ) %>% 
+#   mutate( description = SAE_Reporting_SAE_SAE_Event )
+# 
+# 
+# 
+# print_flextable( SAE.data,
+#                  column_recode = list(
+#                    Label = "Patient",
+#                    SAE_Reporting_SAE_SAE_Num = "SCTRU SAE No.",
+#                    description = "SAE event term",
+#                    SAE_Reporting_SAE_SAE_Grade = "CTC Grade V4.0",
+#                    SAE_Reporting_SAE_SAE_Symp_Start = "Onset Date",
+#                    SAE_Reporting_SAE_SAE_Axi_Related = "Causality Assessment of Site I",
+#                    SAE_Reporting_SAE_SAE_CI_Cause = "Causality Assessment of CI",
+#                    SAE_Reporting_SAE_SAE_Exp_Unexp = "Expectedness Assessment of CI",
+#                    SAE_Reporting_SAE_2_SAE_Outcome = "SAE Outcome",
+#                    SUSAR = "SUSAR?",
+#                    SAEtype = "SAE Type",
+#                    suspect = "Suspect drug/procedure",
+#                    IMPdose = "IMP Dose & route",
+#                    studydrug = "Date study drug started and stopped"
+#                  ))
+# 
+# 
+# AE.data = toxicity_ALL.d %>% filter( value > 0 ) %>%
+#   dplyr::rename( description = toxicity_description )
+
+```
+
+```{r}
+
+# if ( EUDRACT.MEDDRA_SAE.FILE != "" & file.exists( paste( EUDRACT.MEDDRA_SAE.LOCATION,
+#                          EUDRACT.MEDDRA_SAE.FILE,
+#                          sep="/") ) ) {
+#   
+#   SAE_MedDRA_encoding.in = read_xlsx( paste( EUDRACT.MEDDRA_SAE.LOCATION,
+#                          EUDRACT.MEDDRA_SAE.FILE,
+#                          sep="/") ) %>% 
+#     mutate( soc_term = ifelse( is.na(`SOC confirmed`),
+#                            `SOC proposed`,
+#                            `SOC confirmed` ) )
+#   
+#   SAE_MedDRA_encoding = SAE_MedDRA_encoding.in  %>% 
+#     inner_join( eudract::soc_code %>% 
+#                   select( soc_term,
+#                           meddra ),
+#                 by="soc_term" ) %>% 
+#     dplyr::rename( soc = meddra )
+#   
+#   
+#   SAE_MedDRA_merge = SAE.data %>% 
+#     inner_join( SAE_MedDRA_encoding, by=c( "Label", "description" ) ) %>% 
+#     mutate( pt = NA ) %>% 
+#     dplyr::rename( subjid = Label ) %>% 
+#     dplyr::rename( related = SAE_Reporting_SAE_SAE_CI_Cause ) %>% 
+#     mutate( fatal = case_when(
+#       SAE_Reporting_SAE_2_SAE_Outcome == "Death" ~ 1,
+#       TRUE ~ 0 ) ) %>% 
+#     mutate( serious = 1 ) %>% 
+#     mutate( group = "Single" ) %>% 
+#     mutate( term = soc_term ) %>% 
+#     select( pt, # CAN BE NA
+#             subjid, # Label
+#             related, # SAE.data$SAE_Reporting_SAE_SAE_CI_Cause
+#             soc, # got this in SAE_MedDRA_encoding$soc
+#             fatal, # SAE.data$SAE_Reporting_SAE_2_SAE_Outcome
+#             serious, # this will be 1 for SAEs
+#             group, # which arm - what to do if there is only one?
+#             term # SAE_MedDRA_encoding$soc_term
+#     )
+# }
+# 
+# 
+# SAE_MedDRA_merge = tibble()
+# AE_MedDRA_merge = tibble()
+# 
+# 
+# if ( EUDRACT.MEDDRA_SAE.FILE != "" & file.exists( paste( EUDRACT.MEDDRA_SAE.LOCATION,
+#                          EUDRACT.MEDDRA_SAE.FILE,
+#                          sep="/") ) ) {
+#   
+#   SAE_MedDRA_encoding.in = read_xlsx( paste( EUDRACT.MEDDRA_SAE.LOCATION,
+#                          EUDRACT.MEDDRA_SAE.FILE,
+#                          sep="/") ) %>% 
+#     mutate( soc_term = ifelse( is.na(`SOC confirmed`),
+#                            `SOC proposed`,
+#                            `SOC confirmed` ) )
+#   
+#   SAE_MedDRA_encoding = SAE_MedDRA_encoding.in  %>% 
+#     inner_join( eudract::soc_code %>% 
+#                   select( soc_term,
+#                           meddra ),
+#                 by="soc_term" ) %>% 
+#     dplyr::rename( soc = meddra )
+#   
+#   
+#   SAE_MedDRA_merge = SAE.data %>% 
+#     full_join( SAE_MedDRA_encoding, by=c( "Label", "description" ) ) %>% 
+#     mutate( pt = NA ) %>% 
+#     dplyr::rename( subjid = Label ) %>% 
+#     dplyr::rename( related = SAE_Reporting_SAE_SAE_CI_Cause ) %>% 
+#     mutate( fatal = case_when(
+#       SAE_Reporting_SAE_2_SAE_Outcome == "Death" ~ 1,
+#       TRUE ~ 0 ) ) %>% 
+#     mutate( serious = 1 ) %>% 
+#     mutate( group = "Single" ) %>% 
+#     mutate( term = soc_term ) %>% 
+#     select( pt, # CAN BE NA
+#             subjid, # Label
+#             related, # SAE.data$SAE_Reporting_SAE_SAE_CI_Cause
+#             soc, # got this in SAE_MedDRA_encoding$soc
+#             fatal, # SAE.data$SAE_Reporting_SAE_2_SAE_Outcome
+#             serious, # this will be 1 for SAEs
+#             group, # which arm - what to do if there is only one?
+#             term # SAE_MedDRA_encoding$soc_term
+#     )
+# } else {
+#  print_warning( "MedDRA coding not provided for SAEs" )
+#   
+# }
+# 
+# 
+# if ( EUDRACT.MEDDRA_SAE.FILE != "" & file.exists( paste( EUDRACT.MEDDRA_AE.LOCATION,
+#                          EUDRACT.MEDDRA_AE.FILE,
+#                          sep="/") ) ) {
+#   
+#   AE_MedDRA_encoding.in = read_xlsx( paste( EUDRACT.MEDDRA_AE.LOCATION,
+#                          EUDRACT.MEDDRA_AE.FILE,
+#                          sep="/") ) %>% 
+#     mutate( soc_term = ifelse( is.na(`SOC confirmed`),
+#                            `SOC proposed`,
+#                            `SOC confirmed` ) )
+#   
+#   AE_MedDRA_encoding = AE_MedDRA_encoding.in  %>% 
+#     left_join( eudract::soc_code %>% 
+#                   select( soc_term,
+#                           meddra ),
+#                 by="soc_term" ) %>% 
+#     dplyr::rename( soc = meddra ) %>% 
+#     select( -Label )
+#   
+#   AE_MedDRA_merge = AE.data %>% 
+#     full_join( AE_MedDRA_encoding, by="description" ) %>% 
+#     mutate( pt = NA ) %>% 
+#     dplyr::rename( subjid = Label ) %>%
+#     ### Where is the relatedness information for the AEs?
+#     dplyr::mutate( related = "Yes" ) %>% 
+#     mutate( fatal = 0 ) %>% 
+#     mutate( serious = 0 ) %>% 
+#     mutate( group = "Single" ) %>% 
+#     mutate( term = soc_term ) %>% 
+#     select( pt, # CAN BE NA
+#             subjid, # Label
+#             related, # SAE.data$SAE_Reporting_SAE_SAE_CI_Cause
+#             soc, # got this in SAE_MedDRA_encoding$soc
+#             fatal, # SAE.data$SAE_Reporting_SAE_2_SAE_Outcome
+#             serious, # this will be 1 for SAEs
+#             group, # which arm - what to do if there is only one?
+#             term # SAE_MedDRA_encoding$soc_term
+#     )
+# } else {
+#  print_warning( "MedDRA coding not provided for SAEs" )
+#   
+# }
+# 
+# ALL_ADVERSE_EVENTS = SAE_MedDRA_merge %>% 
+#   bind_rows( AE_MedDRA_merge ) %>% 
+#   dplyr::mutate( related = case_when(
+#     related == "No" ~ FALSE,
+#     related == "Yes" ~ TRUE,
+#     TRUE ~ NA
+#   ))
+# 
+# 
+# 
+# ### Enter the number of subjects in this reporting group 
+# ### exposed to the treatment. It is assumed that all subjects
+# ### who received at least one dose of the treatment are
+# ### included in the reporting group.
+# subjectsExposed = c(Single=n.ITT)
+# 
+# ### Enter the number of deaths in this reporting group.
+# ### This includes deaths not related to the trial.
+# # count of deaths not in the Safety data. Could be c(0,0)
+# deathsExternal  = c(Single=ITT_population.d %>%
+#                       filter( Miscellaneous_Death_Trial_ID != "" ) %>% 
+#                       pull( Miscellaneous_Death_Trial_ID ) %>% 
+#                       unique %>% length)
+# 
+# 
+# safety_statistics = safety_summary(ALL_ADVERSE_EVENTS,
+#                                    exposed=subjectsExposed,
+#                                    excess_deaths=deathsExternal,
+#                                    freq_threshold = 0
+# )
+# 
+# simple <- tempfile(fileext = ".xml")
+# eudract_upload_file <- sprintf( "%s/NAXIVA_safety_upload.xml", EUDRACT.XML.LOCATION )
+# 
+# simple_safety_xml(safety_statistics, simple)
+# eudract_convert(input=simple,
+#                 output=eudract_upload_file)
+#   
+# myschema <- xml2::read_xml(system.file("extdata","adverseEvents.xsd", package="eudract"))
+# aes <- xml2::read_xml(eudract_upload_file)
+# check <- xml2::xml_validate(aes,myschema)
+# if(check){print("Validation against the schema has passed!")}
+
+
+```

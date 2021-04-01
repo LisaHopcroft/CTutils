@@ -1,0 +1,23 @@
+<!-- Add information here to provide a high-level summary
+     of the trial that is appropriate to share at the open
+     session of the DMC (i.e., contains no information pertaining
+     to trial results or analyses).
+     
+     Depending on what point the trial is at, you may want to
+     consider including information about:
+     - CRF completion
+     - LPLV
+     - Recruitment problems/issues
+     - Central review progress
+     - Database being locked
+     - Known issues with respect to data management/integrity
+     - Site specific issues
+     -->
+
+# Trial overview
+
+**Static text should be formatted in bold**
+
+Interpretative text should be formatted as normal so that it can
+be easily checked between DMCs.
+

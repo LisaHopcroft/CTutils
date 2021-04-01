@@ -1,0 +1,19 @@
+## Data queries to be resolved
+
+```{r data_queries_list, results="as.is"}
+
+print_data_queries_message( data_queries.list )
+
+for ( dq.i in 1:nrow( data_queries.list ) ) {
+  cat( sprintf( "[%2i] Patient: %s\n",
+                dq.i,
+                data_queries.list[dq.i,"label"]
+                ) )
+  cat( sprintf( "     %s\n", data_queries.list[dq.i,"message"]) )
+  cat( sprintf( "     See %s section\n", data_queries.list[dq.i,"DMC_ref"] ) )
+  cat( sprintf( "     CRF: %s\n", data_queries.list[dq.i,"CRF_ref"]) )
+
+}
+
+  
+```
