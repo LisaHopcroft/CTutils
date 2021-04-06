@@ -346,7 +346,7 @@ Other reasons:
 
 ## Age/gender counts per population
 
-ITT population
+### ITT population
 
 ```{r}
 
@@ -362,7 +362,7 @@ ITT population
 
 ```
 
-Safety/evaluable population
+### Safety/evaluable population
 
 ```{r}
 
@@ -377,7 +377,7 @@ Safety/evaluable population
 
 ```
 
-Surgical population
+### Surgical population
 
 ```{r}
 # 
@@ -393,11 +393,11 @@ Surgical population
 
 ```
 
-### Generating the SAE and AE XML uploads
+## Generating the SAE and AE XML uploads for EudraCT
 
 ```{r CTCAE1}
 
-### Example shown below for NAXIVA trial
+### Example shown below 
 
 # SAE.data = ITT_population.d_extended %>%
 #   filter( !is.na(SAE_Reporting_SAE_SAE_Num) ) %>%
@@ -704,7 +704,7 @@ Surgical population
 # )
 # 
 # simple <- tempfile(fileext = ".xml")
-# eudract_upload_file <- sprintf( "%s/NAXIVA_safety_upload.xml", EUDRACT.XML.LOCATION )
+# eudract_upload_file <- sprintf( "%s/safety_upload.xml", EUDRACT.XML.LOCATION )
 # 
 # simple_safety_xml(safety_statistics, simple)
 # eudract_convert(input=simple,
@@ -715,5 +715,93 @@ Surgical population
 # check <- xml2::xml_validate(aes,myschema)
 # if(check){print("Validation against the schema has passed!")}
 
+
+```
+
+
+## Generating data in ClinicalTrials.gov format
+
+Tables to be in the following format. These can be generated from the
+same Excel spreadsheets as were used to populate the EudraCT XML.
+
+
+| Preferred Term    | SOC term                    | N patients | N events |
+| :---------------- | :-------------------------- | ---------: | -------: | 
+| Cardiac arrest    | Cardiac disorders           |          1 |        3 |
+| Confusional state | Psychiatric disorders       |          1 |        1 |
+| Hematuria         | Renal and urinary disorders |          2 |        2 |
+| Hyperglycemia     | Endocrine disorders         |          1 |        1 |
+
+There are to be two separate tables - one for SAEs and one for AEs.
+
+Also needing to be generated is the number of patients who were affected
+by at least one SAE and at least one AE.
+
+
+```{r}
+# 
+# SAE_MedDRA_encoding.in = read_xlsx( paste( EUDRACT.MEDDRA_SAE.LOCATION,
+#                        EUDRACT.MEDDRA_SAE.FILE,
+#                        sep="/") ) %>% 
+#   mutate( soc_term = ifelse( is.na(`SOC confirmed`),
+#                          `SOC proposed`,
+#                          `SOC confirmed` ) ) %>% 
+#   mutate( pt_term = ifelse( is.na(`Term confirmed`),
+#                          `Term proposed`,
+#                          `Term confirmed` ) )
+# 
+# SAE_MedDRA_encoding = SAE_MedDRA_encoding.in  %>%
+#   inner_join( eudract::soc_code %>%
+#                 select( soc_term,
+#                         meddra ),
+#               by="soc_term" ) %>%
+#   dplyr::rename( soc = meddra )
+# 
+# 
+# SAE_MedDRA_encoding %>%
+#   group_by( pt_term, soc_term ) %>%
+#   summarise( n_patients = length( unique( Label ) ),
+#              n_events = n() ) %>% 
+#   print_flextable
+#   
+# SAE_MedDRA_encoding %>% pull( Label ) %>% unique %>% length
+  
+```
+
+```{r}
+
+# AE_MedDRA_encoding.in = read_xlsx( paste( EUDRACT.MEDDRA_AE.LOCATION,
+#                          EUDRACT.MEDDRA_AE.FILE,
+#                          sep="/") ) %>% 
+#   mutate( soc_term = ifelse( is.na(`SOC confirmed`),
+#                          `SOC proposed`,
+#                          `SOC confirmed` ) ) %>% 
+#   mutate( pt_term = ifelse( is.na(`Term confirmed`),
+#                          `Term proposed`,
+#                          `Term confirmed` ) )
+#   
+# AE_MedDRA_encoding = AE_MedDRA_encoding.in  %>% 
+#     left_join( eudract::soc_code %>% 
+#                   select( soc_term,
+#                           meddra ),
+#                 by="soc_term" ) %>% 
+#     dplyr::rename( soc = meddra ) %>% 
+#     select( -Label )
+#   
+# AE_MedDRA_merge = AE.data %>% 
+#     full_join( AE_MedDRA_encoding, by="description" ) %>% 
+#     select( pt_term, # CAN BE NA
+#             Label, # Label
+#             soc_term # SAE_MedDRA_encoding$soc_term
+#     )
+# 
+# AE_MedDRA_merge %>%
+#   group_by( pt_term, soc_term ) %>%
+#   summarise( n_patients = length( unique( Label ) ),
+#              n_events = n() ) %>% 
+#   print_flextable
+
+
+# AE_MedDRA_merge %>% pull( Label ) %>% unique %>% length
 
 ```
