@@ -2,8 +2,29 @@
 
 <!-- This should be run if any files are read in 20_data-extraction.Rmd -->
 
-Files used in this analysis:
+## Data files used for this analysis
 
 ```{r file_info}
+
 print_flextable( file_information )
+
+```
+
+## R environment
+
+The version of R used was `r getRversion()`.
+
+The following packages were loaded:
+
+```{r r_environment}
+
+environment_info = tibble(
+  package = loadedNamespaces()
+) %>% 
+  group_by( package ) %>% 
+  mutate( version = getNamespaceVersion(package)) %>% 
+  arrange( package )
+
+print_flextable( environment_info )
+
 ```
