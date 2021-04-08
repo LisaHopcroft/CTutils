@@ -1,21 +1,19 @@
 Package: CTutils
 Type: Package
 Title: Helpful Functions for Clinical Trial Data Analysis at SCTRU (Public Health Scotland)
-Version: 0.2
+Version: 0.5.0
 Authors@R: person("Lisa", "Hopcroft", email = "Lisa.Hopcroft@phs.scot",
                   role = c("aut", "cre"))
 Description: This package was developed to support the statistical work done at SCTRU
     (Scottish Clinical Trials Research Unit) as part of Public Health Scotland, from
     outline planning applications to data dissemination and close-down. It is intended
-    to record, document and test data analysis methodologies in accordance with SAPs;
-    document the calculation of sample size calculations; help generation of consistent
-    statistical study reports; plan appropriately for drug distribution
-    (consumption/delivery/supply); generate reports for trial monitoring activites (e.g.,
-    DCR reports); facilitate data dissemination (e.g. EUdraCT XML upload, redacted datasets);
+    to help perform simple tabulations, plots and listings and encourage the consistency
+    in the generation of statistical study reports.  There are plans to facilitate data
+    dissemination (e.g. EUdraCT XML upload, redacted datasets) and
     prepare appropriate materials and documentation in anticipation of MHRA inspection;
     among lots of useful things that I haven't thought of yet.  The hope is that providing
     these utility functions will streamline analysis development time and increase
-    resilience in the statistics function of SCTRU.
+    resilience in the analyst function of SCTRU.
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
@@ -47,3 +45,4 @@ Imports:
     xml2,
     yaml
 RoxygenNote: 7.1.1
+VignetteBuilder: knitr
