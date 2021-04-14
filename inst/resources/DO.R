@@ -10,7 +10,7 @@ main_document.output_name = sprintf( "%s_Final-report.docx",
                                      publication_date_string )
 bookdown::render_book(input       = "index.Rmd",
                       config_file = "_main.yml",
-                      clean       = TRUE,
+                      clean       = FALSE,
                       output_dir  = document_dir,
                       output_file = main_document.output_name )
 
@@ -20,7 +20,7 @@ summary_document.output_name = sprintf( "%s_Final-report_SUMMARY.docx",
                                         publication_date_string )
 bookdown::render_book(input       = "index_supporting.Rmd",
                       config_file = "_summary.yml",
-                      clean       = TRUE,
+                      clean       = FALSE,
                       output_dir  = document_dir,
                       output_file = summary_document.output_name )
 
