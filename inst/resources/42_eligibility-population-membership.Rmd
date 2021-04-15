@@ -1,0 +1,53 @@
+# Recruitment and accrual
+
+**Static text should be formatted in bold**
+
+Interpretative text should be formatted as normal so that it can
+be easily checked between DMCs.
+
+## Eligible study population
+
+```{r eligible_study_population}
+
+```
+
+
+## Treated population membership
+
+```{r treated_study_population}
+
+```
+
+
+## Safety population 
+
+```{r safety_population}
+
+
+```
+
+<!-- ## Any other relevant population
+
+```{r another_population}
+
+
+```
+
+-->
+
+
+
+## Recruitment by site
+
+
+```{r recruitment_by_site}
+
+```
+
+
+## Overall recruitment 
+
+```{r overall_recruitment}
+
+```
+

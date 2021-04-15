@@ -1,0 +1,22 @@
+# Appendix X
+
+**Static text should be formatted in bold**
+
+Interpretative text should be formatted as normal so that it can
+be easily checked between DMCs.
+
+<!----------------------------------------------------------------
+The content of the appendices will be specific to the trial.
+Here are some suggested formats:
+
+Appendix 1: List of patients excluded from the safety population with reasons
+Appendix 2: Details of all adverse events graded as 3 or 4 
+Appendix 3: List of other dose missing reasons 
+Appendix 4: List of other reasons for stopping the trial drug 
+Appendix 5: List of toxicity reasons for stopping the trial drug 
+Appendix 6: List of ECG abnormalities at screening 
+Appendix 7: Details of Medical history at baseline
+Appendix 8: Concomitant medication details 
+Appendix 9: Incidence of grade 3 or 4 adverse events  
+Appendix 10: Concomitant Medication details 
+----------------------------------------------------------------->

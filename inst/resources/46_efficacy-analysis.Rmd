@@ -1,0 +1,41 @@
+<!-- If required, include any relevant discussion of data cleaning,
+     self-evident corrections, and so on. -->
+
+# Efficacy
+
+**Static text should be formatted in bold**
+
+Interpretative text should be formatted as normal so that it can
+be easily checked between DMCs.
+
+## Relevant discussions around efficacy data
+
+<!----------------------------------------------------------------
+The content of this section will be specific to the trial.
+Here are some suggested formats:
+
+6.1 Progression free survival 
+Figure 6.1.1 Progression free survival 
+Table 6.1.2 Summary of progression free survival 
+Table 6.1.3 Definitions of progressive disease fulfilled by patients who have progressed 
+Table 6.1.4 Reasons for censoring (progression-free survival) 
+
+6.2 Overall survival 
+Figure 6.2.1 Overall survival 
+Table 6.2.2 Summary of overall survival
+Table 6.2.3 Causes of death
+Table 6.2.4 Causes of death within 30 days of finishing study drug 
+Table 6.2.5 Reasons for censoring (overall survival) 
+
+6.3 Response 
+Table 6.3.1 Best Response 
+Table 6.3.2 Reasons for unevaluable response  
+Table 6.3.3 Summary of regression model 
+Table 6.3.4 Absolute difference in response rate (CR/PR) 
+
+6.4 Unblinding 
+Table 6.4.1 Patients unblinded with reasons 
+----------------------------------------------------------------->
+
+
+

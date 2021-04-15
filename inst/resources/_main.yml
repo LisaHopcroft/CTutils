@@ -5,18 +5,29 @@ delete_merged_file: true
 after_chapter_script: "save_image.R"
 rmd_files: [
   "index.Rmd",
+  ### Dealing with the glossary/vocabulary information
   "10_glossary-extraction.Rmd",
   "11_glossary-munge.Rmd",
   # "12_dependency-build.Rmd", ### Do not use yet - still in development
+  ### Reading in the data and creating populations
   "20_data-extraction.Rmd",
   "21_data-munge.Rmd",
   "22_population-definitions.Rmd",
+  ### Additional information to generate report (formatting vars etc)
   "30_report-information.Rmd",
-  "31_report-title-page.Rmd",
-  "32_report-preamble.Rmd",
-  "33_report-additions.Rmd",
-  "40_recruitment-and-accrual.Rmd",
-  "41_patient-safety.Rmd",
-  "42_efficacy.Rmd",
+  ### First few pages of the report - introductory information
+  "40_report-title-page.Rmd",
+  "41a_report-preamble.Rmd",
+  "41b_report-additions.Rmd",
+  ### Main content
+  "42_eligibility-population-membership.Rmd",
+  "43_baseline-demographics.Rmd",
+  "44_delivery-of-study-therapy.Rmd",
+  "45_patient-safety.Rmd",
+  "46_efficacy-analysis.Rmd",
+  ### Additional information
   "90_file-information.Rmd",
+  "91_data-queries.Rmd",
+  "92_EudraCT-report.Rmd",
+  #"APPENDIX_X.Rmd"
   ]

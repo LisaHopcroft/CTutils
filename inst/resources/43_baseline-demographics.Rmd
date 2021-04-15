@@ -1,0 +1,114 @@
+<!-- Add additional analyses as defined by the SAP -->
+
+# Baseline data and demographic characteristics
+
+**Static text should be formatted in bold**
+
+Interpretative text should be formatted as normal so that it can
+be easily checked between DMCs.
+
+## Patient and disease characteristics
+
+### Registering centre
+
+```{r registering_centre}
+
+```
+
+### Age at randomisation
+
+```{r age_at_randomisation}
+
+```
+
+### Gender at randomisation
+
+```{r gender_at_randomisation}
+
+```
+
+### Baseline stratification factors
+
+```{r baseline_stratification_factors}
+
+```
+
+### Baseline disease characteristics
+
+```{r baseline_disease_characteristics}
+
+```
+
+## Pre-treatment investigations
+
+### Investigations to ensure eligibility criteria met
+
+```{r eligibility_criteria_investigations}
+
+```
+
+### Investigations to identify tumour
+
+```{r investigations_to_identify_tumour}
+
+```
+
+## Significant Medical History/Existing Symptoms & Signs 
+
+### Cardiac history 
+
+```{r cardiac_history}
+
+```
+
+### Other cardiac history
+
+```{r cardiac_history_other}
+ 
+```
+
+### Respiratory Disease 
+
+```{r respiratory_disease}
+
+```
+
+### Other respiratory disease 
+
+```{r respiratory_disease_other}
+
+```
+
+### Other medical history
+
+```{r other_medical_history}
+
+```
+
+### Conditions/Symptoms/signs caused by concomitant illnesses and medications 
+
+```{r concomitant_conditions}
+
+```
+
+## Concomitant Medication details
+
+### Details of concomitant medication 
+
+```{r concomitant_medicine_details}
+
+```
+
+### Number of patients taking medication for XX 
+
+```{r XX_medication}
+
+```
+
+### Changes to concomitant medications 
+
+```{r concomitant_changes}
+
+```
+
+

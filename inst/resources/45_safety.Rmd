@@ -1,4 +1,4 @@
-# Patient safety
+# Safety
 
 **Static text should be formatted in bold**
 
@@ -19,20 +19,27 @@ be easily checked between DMCs.
 
 ```
 
+## Adverse Events
+
+### Incidence of grade 3/4 adverse events
+
+```{r}
+
+```
+
 ## Severe Adverse Events (N=)
 
-```{r}
-
-```
-
-## Adverse Events / Toxicities (N=)
+### Listing of all SAEs
 
 ```{r}
 
 ```
 
-## Clavien Dindo post-operative complications (N=)
+
+<!--## Clavien Dindo post-operative complications (N=)
 
 ```{r}
 
 ```
+--->
+
