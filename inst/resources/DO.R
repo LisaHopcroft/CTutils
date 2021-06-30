@@ -25,6 +25,16 @@ bookdown::render_book(input       = "index_supporting.Rmd",
                       output_file = summary_document.output_name )
 
 
+### === Supporting document (e.g., summary  for open session ===== ###
+query_document.output_name = sprintf( "%s_QUERIES.docx",
+                                        publication_date_string )
+bookdown::render_book(input       = "index_supporting.Rmd",
+                      config_file = "_dataqueries.yml",
+                      clean       = FALSE,
+                      output_dir  = document_dir,
+                      output_file = query_document.output_name )
+
+
 ### When ready, uncomment this section for the Eudract/ClinicalTrials.gov
 ### report generation
 ### === Supporting document: EUdraCT information === ###

@@ -1,0 +1,11 @@
+language:
+  ui:
+    chapter_name: "Section"
+delete_merged_file: true
+rmd_files: [
+  "index_supporting.Rmd",
+  "31_report-title-page.Rmd",
+  "41c_summary-preamble.Rmd",
+  "91_data-queries.Rmd",
+  "90_file-information.Rmd",
+  ]
