@@ -1,0 +1,259 @@
+---
+title: "CTutils Functions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{CTutils Functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+library(CTutils)
+library(rlang)
+library(tibble)
+library(dplyr)
+library(knitr)
+
+```
+
+
+# Clinical Trial utilities (CTutils)
+
+CTutils is an R package containing methods to assist in writing
+statistical study reports for clinical trials (although the
+functions could well be useful in other contexts).
+
+## Example data
+
+To demonstrate these functions, this package contains some 
+randomly generated trial data for 50 patients.
+
+```{r example_data}
+
+data(example_trial_data)
+
+glimpse( example_trial.data )
+
+```
+
+There are a number of demographic variables for each patient,
+including their trial ID (`Label`), Arm (`Arm`), age (`age`),
+Gender (`Gender`) and Ethnicity (`Ethnicity`).
+
+```{r}
+
+example_trial.data %>%
+  select( Label, Arm, age, Gender, Ethnicity ) %>%
+  head() %>% 
+  kable
+
+```
+
+There are then several column containing data representative of
+what would be collected via (e)CRF on a clinical trial, including
+details about medical history; information about planned/actual
+surgical procedures and RECIST assessments at various timepoints.
+
+```{r example_data_accompanying}
+
+patient_data = example_trial.data %>%
+  select( -c(Label, Arm, age, Gender, Ethnicity) ) %>%
+  head(1) %>% as.list()
+
+tibble( variable = names(patient_data),
+        value    = as.character(patient_data) ) %>%
+  kable()
+
+```
+
+Also present in this example trial dataset are two
+named lists with additional information about each of the
+columns in the example trial data: `example_trial.glossary`
+provides a readable explanation of each variable in the dataset
+and `example_trial.vocabulary` provides a list of the allowed
+vocabulary for each categorical variable in the dataset.
+
+```{r glossary_vocabulary}
+
+example_trial.glossary$Week1_Surgery_Planned
+example_trial.vocabulary$Week1_Surgery_Planned
+```
+
+Note that *all* variables should have an entry in the
+`glossary` object, but not all variables need an entry in
+the `vocabulary` object (only categorical variables with a
+closed vocabulary need to be included here),
+
+
+```{r}
+
+colnames( example_trial.data ) [ ! colnames( example_trial.data ) %in% names( example_trial.glossary )  ]
+
+v = VennDiagram::venn.diagram(x=list( Data = colnames(example_trial.data),
+                                  Glossary = names(example_trial.glossary),
+                                  Vocabulary = names(example_trial.vocabulary)),
+                          filename=NULL)
+grid::grid.draw(v)
+
+
+```
+
+These `glossary` and `vocabulary` objects will be generated
+auotmatically by `10_glossary-extraction.Rmd` and
+`11_glossary-munge.Rmd` in the skeleton CTutils pipeline if you are
+using it.
+
+## Utility functions
+
+In this section, several utility functions in the CTutils
+package will be demonstrated using the example trial data.
+
+### Count up occurences of Yes/No `do_count()`
+
+Count up occurrences of specific results in a column.
+By default, the function will count occurrences of
+"Yes" and "No".
+
+```{r}
+
+do_count( this_data = example_trial.data,
+          this_var  = quo(Screening_PMH_Throm_Y_N),
+          key_for_variables = example_trial.glossary
+)
+
+```
+
+Providing multiple variables is allowed:
+
+```{r}
+
+do_count( this_data = example_trial.data,
+          this_var  = quos(Screening_PMH_Throm_Y_N,
+                           Screening_PMH_Cereb_Y_N),
+          key_for_variables = example_trial.glossary
+)
+
+```
+
+If you ask for a variable that doesn't exist in that
+dataset, you will get an error:
+
+```{r}
+
+# ### ERROR
+# do_count( this_data = example_trial.data,
+#           this_var  = quos(Screening_PMH_Anxiety_Y_N),
+#           key_for_variables = example_trial.glossary
+# )
+
+```
+
+It may be desirable to show count data for two similar
+variables at two different timepoints (e.g., when the same
+question is being asked at two different timepoints). Rather than
+having to carry out these individual `do_count()` calls and merge
+the resulting count tables, the function `do_count_comparison()`
+does this for you.
+
+This function first does the two separate `do_count()` function calls,
+using the data and variables provided by `this_data`, `group1_variables`
+and `group2_variables`. From these count tables, it takes the data as
+provided in the specified columns (`group1_column` and `group2_column`)
+and merges it together.  Note that for this to work, the glossary terms
+for the variables must be identical.
+
+```{r}
+do_count_comparison(this_data=example_trial.data,
+                    group1_name = "@ Week 1",
+                    group1_column = "Yes",
+                    group1_variables = quos(Week1_Surgery_NonInvasive_Y_N,
+                                            Week1_Surgery_Open_Y_N),
+                    group2_name = "@ Surgery",
+                    group2_column = "Yes",
+                    group2_variables = quos(Surgery_Surgery_NonInvasive_Y_N,
+                                            Surgery_Surgery_Open_Y_N),
+                    key_for_variables = example_trial.glossary
+                    )
+
+```
+
+### Count up occurrences of various levels in a column `do_list_extraction()`
+
+This function is designed to be used where the data in the column
+of interest is not just Yes/No, and totals for each value within
+that column are desired.
+
+```{r}
+
+do_list_extraction( this_data = example_trial.data,
+                    this_var  = quo(Week1_Surgery_Planned),
+                    vocab_for_variables = example_trial.vocabulary
+)
+
+```
+
+By default, it includes all levels for that variable as defined
+by the `vocab_for_variables` parameter, but setting `expand_levels`
+to `FALSE` will display counts for ONLY those levels present
+in the column.
+
+```{r}
+do_list_extraction( this_data = example_trial.data,
+                    this_var  = quo(Week1_Surgery_Planned),
+                    expand_levels = FALSE,
+                    vocab_for_variables = example_trial.vocabulary
+)
+
+```
+
+Remove the total by setting `add_total` to `FALSE`.
+
+```{r}
+
+do_list_extraction( this_data = example_trial.data,
+                    this_var  = quo(Week1_Surgery_Planned),
+                    add_total = FALSE,
+                    vocab_for_variables = example_trial.vocabulary
+)
+
+```
+
+As with the `do_count()` function, there is a way to combine the 
+values of two `do_list_extractions()`: `do_list_comparison()`.
+
+```{r}
+
+do_list_comparison( example_trial.data,
+                    group1_variable = quo( Week1_Surgery_Planned ),
+                    group1_name = "Planned",
+                    group2_variable = quo( Surgery_Surgery_Details ),
+                    group2_name = "Actual",
+                    vocab_for_variables = example_trial.vocabulary )
+ 
+```
+
+### Summarise numeric data `do_summary()`
+
+The function `do_summary()` will summarise numeric data.
+The function will return a list with two objects:
+
+- a table summarising that variable (n, min, median, max etc)
+- a boxplot summarising that variable
+
+```{r}
+
+do_summary( example_trial.data,
+            this_var = quos(age, age),
+            key_for_variables = example_trial.glossary )
+
+```
+
+It is possible to provide `do_summary()` with more than
+one variable if the summary statistics/boxplots should be shown
+side by side.
+
