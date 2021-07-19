@@ -19,7 +19,12 @@ deployment etc etc....
 
 ## Is there a vignette?
 
-Not yet, but I am working towards one.
+There are a couple:
+
+* `CTutils-Quickstart.Rmd` tells you how to get started
+* `CTutils-Functions.pdf` gives you a bit more information about
+specific CTutils functions
+
 
 ## How to install
 

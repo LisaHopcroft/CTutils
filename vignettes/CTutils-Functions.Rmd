@@ -42,13 +42,13 @@ glimpse( example_trial.data )
 ```
 
 There are a number of demographic variables for each patient,
-including their trial ID (`Label`), Arm (`Arm`), age (`age`),
+including their trial ID (`Label`), Arm (`Arm`), age (`Age`),
 Gender (`Gender`) and Ethnicity (`Ethnicity`).
 
 ```{r}
 
 example_trial.data %>%
-  select( Label, Arm, age, Gender, Ethnicity ) %>%
+  select( Label, Arm, Age, Gender, Ethnicity ) %>%
   head() %>% 
   kable
 
@@ -62,7 +62,7 @@ surgical procedures and RECIST assessments at various timepoints.
 ```{r example_data_accompanying}
 
 patient_data = example_trial.data %>%
-  select( -c(Label, Arm, age, Gender, Ethnicity) ) %>%
+  select( -c(Label, Arm, Age, Gender, Ethnicity) ) %>%
   head(1) %>% as.list()
 
 tibble( variable = names(patient_data),
@@ -122,7 +122,7 @@ By default, the function will count occurrences of
 ```{r}
 
 do_count( this_data = example_trial.data,
-          this_var  = quo(Screening_PMH_Throm_Y_N),
+          this_var  = quo(Screening_PMH_Throm),
           key_for_variables = example_trial.glossary
 )
 
@@ -133,8 +133,8 @@ Providing multiple variables is allowed:
 ```{r}
 
 do_count( this_data = example_trial.data,
-          this_var  = quos(Screening_PMH_Throm_Y_N,
-                           Screening_PMH_Cereb_Y_N),
+          this_var  = quos(Screening_PMH_Throm,
+                           Screening_PMH_Cereb),
           key_for_variables = example_trial.glossary
 )
 
@@ -167,21 +167,6 @@ provided in the specified columns (`group1_column` and `group2_column`)
 and merges it together.  Note that for this to work, the glossary terms
 for the variables must be identical.
 
-```{r}
-do_count_comparison(this_data=example_trial.data,
-                    group1_name = "@ Week 1",
-                    group1_column = "Yes",
-                    group1_variables = quos(Week1_Surgery_NonInvasive_Y_N,
-                                            Week1_Surgery_Open_Y_N),
-                    group2_name = "@ Surgery",
-                    group2_column = "Yes",
-                    group2_variables = quos(Surgery_Surgery_NonInvasive_Y_N,
-                                            Surgery_Surgery_Open_Y_N),
-                    key_for_variables = example_trial.glossary
-                    )
-
-```
-
 ### Count up occurrences of various levels in a column `do_list_extraction()`
 
 This function is designed to be used where the data in the column
@@ -191,7 +176,7 @@ that column are desired.
 ```{r}
 
 do_list_extraction( this_data = example_trial.data,
-                    this_var  = quo(Week1_Surgery_Planned),
+                    this_var  = quo(surgery_planned),
                     vocab_for_variables = example_trial.vocabulary
 )
 
@@ -204,7 +189,7 @@ in the column.
 
 ```{r}
 do_list_extraction( this_data = example_trial.data,
-                    this_var  = quo(Week1_Surgery_Planned),
+                    this_var  = quo(surgery_planned),
                     expand_levels = FALSE,
                     vocab_for_variables = example_trial.vocabulary
 )
@@ -216,7 +201,7 @@ Remove the total by setting `add_total` to `FALSE`.
 ```{r}
 
 do_list_extraction( this_data = example_trial.data,
-                    this_var  = quo(Week1_Surgery_Planned),
+                    this_var  = quo(surgery_planned),
                     add_total = FALSE,
                     vocab_for_variables = example_trial.vocabulary
 )
@@ -229,9 +214,9 @@ values of two `do_list_extractions()`: `do_list_comparison()`.
 ```{r}
 
 do_list_comparison( example_trial.data,
-                    group1_variable = quo( Week1_Surgery_Planned ),
+                    group1_variable = quo( surgery_planned ),
                     group1_name = "Planned",
-                    group2_variable = quo( Surgery_Surgery_Details ),
+                    group2_variable = quo( surgery_performed ),
                     group2_name = "Actual",
                     vocab_for_variables = example_trial.vocabulary )
  
@@ -248,7 +233,7 @@ The function will return a list with two objects:
 ```{r}
 
 do_summary( example_trial.data,
-            this_var = quos(age, age),
+            this_var = quo(Age),
             key_for_variables = example_trial.glossary )
 
 ```
@@ -257,3 +242,11 @@ It is possible to provide `do_summary()` with more than
 one variable if the summary statistics/boxplots should be shown
 side by side.
 
+
+```{r}
+
+do_summary( example_trial.data,
+            this_var = quos(Age, Weight),
+            key_for_variables = example_trial.glossary )
+
+```
