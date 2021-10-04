@@ -4,8 +4,7 @@ CTutils
 <img src="img/CTutils_HEX.png" width="160px" align="right"/>
 
 
-First, a caveat: This is still in development, I'm expecting bugs.
-Please report!
+First, a caveat: This is still in development, please report any issues!
 
 ## What is CTutils?
  
